@@ -96,6 +96,10 @@
             <argument type="service" id="repository.master_storage" />
         </service>
 
+        <service id="action.install_aws" class="AcmePhp\Cli\Action\InstallAwsAction">
+            <argument type="service" id="aws.client_factory" />
+        </service>
+
         <service id="action.push_rancher" class="AcmePhp\Cli\Action\PushRancherAction">
             <argument type="service" id="http.raw_client" />
         </service>
@@ -126,25 +130,18 @@
             <argument type="service" id="output" />
             <tag name="acmephp.challenge_solver" alias="dns" />
         </service>
+        <service id="challenge_solver.route53" class="AcmePhp\Core\Challenge\Dns\Route53Solver">
+            <argument type="service" id="challenge_extractor.dns" />
+            <argument type="service">
+                <service class="Aws\Route53\Route53Client">
+                    <factory service="aws.client_factory" method="getRoute53Client" />
+                </service>
+            </argument>
+            <tag name="acmephp.challenge_solver" alias="route53" />
+        </service>
         <service id="challenge_solver.locator" class="AcmePhp\Core\Challenge\SolverLocator">
             <argument type="service" id="container" />
             <argument />
-        </service>
-        <service id="challenger.route53" class="AcmePhp\Core\Challenger\Route53Challenger">
-            <argument type="service">
-                <service class="Aws\Route53\Route53Client">
-                    <argument type="collection">
-                        <argument key="region">us-west-2</argument>
-                        <argument key="version">2013-04-01</argument>
-                        <argument key="credentials" type="service">
-                            <service>
-                                <factory class="Aws\Credentials\CredentialProvider" method="env"/>
-                            </service>
-                        </argument>
-                    </argument>
-                </service>
-            </argument>
-            <argument type="service" id="http.base64_encoder"/>
         </service>
 
 
@@ -176,5 +173,8 @@
                 <argument type="service" id="challenge_validator.dns" />
             </argument>
         </service>
+
+        <!-- Overridden by the commands  -->
+        <service id="aws.client_factory" class="AcmePhp\Cli\Action\AwsClientFactory"/>
     </services>
 </container>

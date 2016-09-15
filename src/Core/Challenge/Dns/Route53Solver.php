@@ -9,48 +9,57 @@
  * file that was distributed with this source code.
  */
 
-namespace AcmePhp\Core\Challenger;
+namespace AcmePhp\Core\Challenge\Dns;
 
+use AcmePhp\Core\Challenge\SolverInterface;
 use AcmePhp\Core\Exception\Protocol\ChallengeFailedException;
-use AcmePhp\Core\Http\Base64SafeEncoder;
 use AcmePhp\Core\Protocol\AuthorizationChallenge;
 use Aws\Route53\Route53Client;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * ACME DNS challenger with automate configuration of a AWS route53
+ * ACME DNS solver with automate configuration of a AWS route53
  *
  * @author Jérémy Derussé <jeremy@derusse.com>
  */
-class Route53Challenger extends DnsChallenger
+class Route53Solver implements SolverInterface
 {
+    /**
+     * @var DnsDataExtractor
+     */
+    private $extractor;
+
     /**
      * @var Route53Client
      */
     private $client;
 
     /**
-     * @param Route53Client     $client
-     * @param Base64SafeEncoder $encoder
-     * @param OutputInterface   $output
+     * @param DnsDataExtractor $extractor
+     * @param Route53Client    $client
      */
     public function __construct(
-        Route53Client $client,
-        Base64SafeEncoder $encoder = null,
-        OutputInterface $output = null
+        DnsDataExtractor $extractor = null,
+        Route53Client $client = null
     ) {
-        parent::__construct($encoder, $output);
+        $this->extractor = null === $extractor ? new DnsDataExtractor() : $extractor;
+        $this->client = null === $client ? new Route53Client([]) : $client;
+    }
 
-        $this->client = $client;
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(AuthorizationChallenge $authorizationChallenge)
+    {
+        return 'dns-01' === $authorizationChallenge->getType();
     }
 
     /**
      * @inheritdoc
      */
-    public function initialize(AuthorizationChallenge $authorizationChallenge)
+    public function solve(AuthorizationChallenge $authorizationChallenge)
     {
-        $entryName = $this->getEntryName($authorizationChallenge);
-        $entryValue = $this->getEntryValue($authorizationChallenge);
+        $recordName = $this->extractor->getRecordName($authorizationChallenge);
+        $recordValue = $this->extractor->getRecordValue($authorizationChallenge);
 
         $zone = $this->getZone($authorizationChallenge->getDomain());
 
@@ -61,10 +70,10 @@ class Route53Challenger extends DnsChallenger
                         [
                             'Action' => 'UPSERT',
                             'ResourceRecordSet' => [
-                                'Name' => $entryName,
+                                'Name' => $recordName,
                                 'ResourceRecords' => [
                                     [
-                                        'Value' => sprintf('"%s"', $entryValue),
+                                        'Value' => sprintf('"%s"', $recordValue),
                                     ],
                                 ],
                                 'TTL' => 5,
@@ -76,26 +85,6 @@ class Route53Challenger extends DnsChallenger
                 'HostedZoneId' => $zone['Id'],
             ]
         );
-
-
-        $this->output->writeln(
-            sprintf(
-                <<<'EOF'
-<info>The authorization token was successfully fetched!</info>
-
-<info>A new TXT record had been added to the DNS Zone, but you have to wait it propagation</info>
-
-    1. Check in your terminal that the following command returns the following response
-       
-         $ host -t TXT %s
-         %s descriptive text "%s"
-EOF
-                ,
-                $entryName,
-                $entryName,
-                $entryValue
-            )
-        );
     }
 
     /**
@@ -103,21 +92,21 @@ EOF
      */
     public function cleanup(AuthorizationChallenge $authorizationChallenge)
     {
-        $entryName = $this->getEntryName($authorizationChallenge);
+        $recordName = $this->extractor->getRecordName($authorizationChallenge);
 
         $zone = $this->getZone($authorizationChallenge->getDomain());
         $recordSets = $this->client->listResourceRecordSets(
             [
                 'HostedZoneId' => $zone['Id'],
-                'StartRecordName' => $entryName,
+                'StartRecordName' => $recordName,
                 'StartRecordType' => 'TXT',
             ]
         );
 
         $recordSets = array_filter(
             $recordSets['ResourceRecordSets'],
-            function ($recordSet) use ($entryName) {
-                return ($recordSet['Name'] === $entryName && $recordSet['Type'] === 'TXT');
+            function ($recordSet) use ($recordName) {
+                return ($recordSet['Name'] === $recordName && $recordSet['Type'] === 'TXT');
             }
         );
 

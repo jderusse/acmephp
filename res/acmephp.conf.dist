@@ -57,6 +57,14 @@ storage:
         #   # private_key: path/to/or/contents/of/privatekey
         #   # timeout: 30
 
+        #
+        # Install the certificate in an AWS ELB
+        #
+        # - action: instal_aws
+        #   region: eu-west-1
+        #   certificate_prefix: acme_php_
+        #   load_balancer_name: my_elb
+        #   load_balancer_port: 443
 
 ###################################################################
 # Monitoring
