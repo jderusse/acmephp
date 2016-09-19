@@ -12,6 +12,7 @@
 namespace AcmePhp\Cli;
 
 use AcmePhp\Cli\Command\AuthorizeCommand;
+use AcmePhp\Cli\Command\AutoCommand;
 use AcmePhp\Cli\Command\CheckCommand;
 use AcmePhp\Cli\Command\Helper\DistinguishedNameHelper;
 use AcmePhp\Cli\Command\MonitoringTestCommand;
@@ -44,6 +45,7 @@ class Application extends BaseApplication
     protected function getDefaultCommands()
     {
         return array_merge(parent::getDefaultCommands(), [
+            new AutoCommand(),
             new RegisterCommand(),
             new AuthorizeCommand(),
             new CheckCommand(),

@@ -69,6 +69,24 @@ class InstallAwsAction implements ActionInterface
         $certificatePrefix = empty($config['certificate_prefix']) ? 'acmephp_' : $config['certificate_prefix'];
         $certificateName = $certificatePrefix.date('Ymd-His');
 
+        // cleanup old certificates
+        $certificates = $iamClient->listServerCertificates()['ServerCertificateMetadataList'];
+        foreach ($certificates as $certificate) {
+            if (0 === strpos($certificate['ServerCertificateName'], $certificatePrefix)
+                && $certificateName !== $certificate['ServerCertificateName']
+            ) {
+                try {
+                    $iamClient->deleteServerCertificate(
+                        ['ServerCertificateName' => $certificate['ServerCertificateName']]
+                    );
+                } catch (IamException $e) {
+                    if ($e->getAwsErrorCode() !== 'DeleteConflict') {
+                        throw $e;
+                    }
+                }
+            }
+        }
+
         // upload new Certificate
         $issuerChain = [];
         $issuerCertificate = $response->getCertificate()->getIssuerCertificate();
@@ -109,8 +127,13 @@ class InstallAwsAction implements ActionInterface
                 && $certificateName !== $certificate['ServerCertificateName']
             ) {
                 try {
-                    $iamClient->deleteServerCertificate(
-                        ['ServerCertificateName' => $certificate['ServerCertificateName']]
+                    $this->retryCall(
+                        // Try several time to delete certificate given AWS takes time to uninstall previous one
+                        function () use ($iamClient, $certificate) {
+                            $iamClient->deleteServerCertificate(
+                                ['ServerCertificateName' => $certificate['ServerCertificateName']]
+                            );
+                        }, 5
                     );
                 } catch (IamException $e) {
                     if ($e->getAwsErrorCode() !== 'DeleteConflict') {

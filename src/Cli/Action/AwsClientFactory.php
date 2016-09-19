@@ -9,19 +9,6 @@ use Aws\Route53\Route53Client;
 
 class AwsClientFactory
 {
-    /**
-     * @var string
-     */
-    private $defaultRegion;
-
-    /**
-     * @param string $defaultRegion
-     */
-    public function __construct($defaultRegion = 'us-west-1')
-    {
-        $this->defaultRegion = $defaultRegion;
-    }
-
     public function getIamClient($region = null)
     {
         return new IamClient($this->getClientArgs(['region' => $region, 'version' => '2010-05-08']));
@@ -42,11 +29,11 @@ class AwsClientFactory
     private function getClientArgs(array $args = [])
     {
         if (empty($args['region'])) {
-            $args['region'] = $this->defaultRegion;
+            $args['region'] = getenv('AWS_DEFAULT_REGION');
         }
 
         if (empty($args['credentials'])) {
-            $args['credentials'] = CredentialProvider::defaultProvider();
+            $args['credentials'] = CredentialProvider::env();
         }
 
         return $args;

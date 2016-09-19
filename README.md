@@ -76,3 +76,52 @@ they are due to an issue in the container DNS.
 **Warning**: as the acmephp/testing-ca Docker image needs to be mapped to the host network,
 you may have ports conflicts. See [https://github.com/acmephp/testing-ca](https://github.com/acmephp/testing-ca)
 for more informations.
+
+
+
+## Auto command
+
+The auto command is an all in one command who works with a `domain` 
+config file like 
+
+
+```
+contact_email: contact@company
+
+default_distinguished_name:
+  country: FR
+  locality: PARIS
+  organization_name: MyCompany
+
+solver: route53
+
+domains:
+  example.com:
+    subject_alternative_names:
+      - www.example.com
+      - www1.example.com
+      - www2.example.com
+      - www3.example.com
+      - www4.example.com
+    install:
+      - action: install_aws
+        args:
+          region: eu-west-1
+          certificate_prefix: acme_php_
+          load_balancer_name: letsencrypt
+          load_balancer_port: 443
+
+aws:
+  access_key_id: YOUR_ACCESS_KEY
+  secret_access_key: YOUR_SECRET_KEY
+  default_region: eu-west-1
+```
+
+
+## Using container
+
+A public docker container  is available
+
+```
+docker run --rm -v /var/lib/letsencrypt/data:/root/.acmephp -v /var/lib/letsencrypt/config.yml:/etc/acme.yml jderusse/acmephp auto /etc/acme.yml
+```
