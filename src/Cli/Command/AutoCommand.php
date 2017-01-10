@@ -16,6 +16,7 @@ use AcmePhp\Core\Challenge\SolverInterface;
 use AcmePhp\Core\Challenge\ValidatorInterface;
 use AcmePhp\Core\Exception\Protocol\ChallengeNotSupportedException;
 use AcmePhp\Core\Exception\Server\MalformedServerException;
+use AcmePhp\Core\Protocol\AuthorizationChallenge;
 use AcmePhp\Ssl\CertificateRequest;
 use AcmePhp\Ssl\CertificateResponse;
 use AcmePhp\Ssl\DistinguishedName;
@@ -52,7 +53,7 @@ class AutoCommand extends AbstractCommand
                     ),
                 ]
             )
-            ->setDescription('Automaticaly chaleng domain and request certificates configured in the given file')
+            ->setDescription('Automaticaly chalenge domain and request certificates configured in the given file')
             ->setHelp(
                 <<<'EOF'
                 The <info>%command.name%</info> request and check domain, the request to the ACME server a SSL certificate for a
@@ -137,6 +138,7 @@ EOF
             );
         }
     }
+
     private function isUpToDate($domain, $domainConfig)
     {
         $repository = $this->getRepository();
@@ -240,18 +242,23 @@ EOF
         $challengePerDomain = [];
         $this->output->writeln('<comment>Requesting authorization tokens...</comment>');
         foreach ($challengeDomains as $challengeDomain) {
-            if ($repository->hasDomainAuthorizationChallenge($challengeDomain)) {
-                continue;
-            }
-
             $this->output->writeln(sprintf('<info>Requesting an authorization token for domain %s ...</info>', $challengeDomain));
 
             $authorizationChallenges = $client->requestAuthorization($challengeDomain);
             $authorizationChallenge = null;
+            /** @var AuthorizationChallenge $candidate */
             foreach ($authorizationChallenges as $candidate) {
-                if ($solver->supports($candidate)) {
+                if ($candidate->isValid()) {
                     $authorizationChallenge = $candidate;
                     break;
+                }
+            }
+            if (null === $authorizationChallenge) {
+                foreach ($authorizationChallenges as $candidate) {
+                    if ($solver->supports($candidate)) {
+                        $authorizationChallenge = $candidate;
+                        break;
+                    }
                 }
             }
 
@@ -268,8 +275,11 @@ EOF
         $startTestTime = time();
         $this->output->writeln('<comment>Testing the challenges...</comment>');
         foreach ($challengePerDomain as $challengeDomain => $authorizationChallenge) {
+            if ($authorizationChallenge->isValid()) {
+                continue;
+            }
             if (time() - $startTestTime > 30) {
-                $this->output->writeln(sprintf('<info>Spent to long to test everything. It should be ok now...</info>', $challengeDomain));
+                $this->output->writeln('<info>Spent to long to test everything. It should be ok now...</info>');
                 break;
             }
 
@@ -281,10 +291,13 @@ EOF
 
         $this->output->writeln('<comment>Requesting authorization checks...</comment>');
         foreach ($challengePerDomain as $challengeDomain => $authorizationChallenge) {
+            if ($authorizationChallenge->isValid()) {
+                $this->output->writeln(sprintf('<info>Authorization already validated for domain %s ...</info>', $challengeDomain));
+                continue;
+            }
+
             $this->output->writeln(sprintf('<info>Requesting authorization check for domain %s ...</info>', $challengeDomain));
             $client->challengeAuthorization($authorizationChallenge);
-
-            $repository->storeDomainAuthorizationChallenge($challengeDomain, $authorizationChallenge);
             $solver->cleanup($authorizationChallenge);
         }
     }

@@ -108,7 +108,7 @@ class AcmeClientTest extends \PHPUnit_Framework_TestCase
 
         try {
             $check = $this->client->challengeAuthorization($challenge);
-            $this->assertEquals('valid', $check['status']);
+            $this->assertEquals('valid', $check->getStatus());
         } finally {
             $process->stop();
         }
