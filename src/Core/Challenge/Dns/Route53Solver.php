@@ -142,7 +142,14 @@ class Route53Solver implements SolverInterface
             range(1, count($domainParts))
         );
 
-        $zones = $this->client->listHostedZones()['HostedZones'];
+        $zones = [];
+        $args = [];
+        do {
+            $resp = $this->client->listHostedZones($args);
+            $zones = array_merge($zones, $resp['HostedZones']);
+            $args = ['Marker' => $resp['NextMarker']];
+        } while($resp['IsTruncated']);
+
         foreach ($domains as $domain) {
             foreach ($zones as $zone) {
                 if ($zone['Name'] === $domain.'.') {
