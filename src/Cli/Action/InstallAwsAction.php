@@ -117,7 +117,8 @@ class InstallAwsAction implements ActionInterface
                         'SSLCertificateId' => $certificateArn,
                     ]
                 );
-            }
+            },
+            30
         );
 
         // cleanup old certificates
