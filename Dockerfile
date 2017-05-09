@@ -6,8 +6,7 @@ RUN echo "@testing http://nl.alpinelinux.org/alpine/edge/testing" >> /etc/apk/re
 
 # PHP
 RUN apk add --no-cache \
-        php7 \
- && ln -s /usr/bin/php7 /usr/bin/php
+        php7
 
 # Performances matter
 RUN apk add --no-cache \
