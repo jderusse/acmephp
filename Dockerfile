@@ -48,6 +48,7 @@ ADD . /srv
 RUN apk add --no-cache --virtual build-composer \
         php7-phar \
         php7-sockets \
+        php7-tokenizer \
         git \
 
  && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
