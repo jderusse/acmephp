@@ -36,6 +36,7 @@ RUN echo "opcache.enable_cli=1"    > /etc/php7/conf.d/opcache.ini \
 # Acme requirements
 RUN apk add --no-cache \
         php7-openssl \
+        php7-simplexml \
         openssl \
         ca-certificates
 
