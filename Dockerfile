@@ -37,6 +37,7 @@ RUN echo "opcache.enable_cli=1"    > /etc/php7/conf.d/opcache.ini \
 RUN apk add --no-cache \
         php7-openssl \
         php7-simplexml \
+        php7-xml \
         openssl \
         ca-certificates
 
