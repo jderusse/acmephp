@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -30,10 +30,10 @@ U+DPwrEOIOFBs6lO6dZZ5yXrYfEyU3ROA2m5pGGI9ks7YPeqrJjrw324uUwRPchi
 GkttboODHjBs7w/064iCNSh9nEurJjHaBONtuIGNXdtvF0C/iIvBv+gB7tvm/PK5
 zoQL2yWlSN/1pRKChfSu6X8CAwEAAQ==';
 
-        $publicKey = PublicKey::fromDER(base64_decode($derb64));
+        $publicKey = PublicKey::fromDER(base64_decode($derb64, true));
 
         $this->assertInstanceOf(PublicKey::class, $publicKey);
-        $this->assertEquals('48fa4235a71c704c815363702d7effbb', md5($publicKey->getPEM()));
+        $this->assertSame('48fa4235a71c704c815363702d7effbb', md5($publicKey->getPEM()));
     }
 
     public function test getDER returns a string()
@@ -56,7 +56,7 @@ zoQL2yWlSN/1pRKChfSu6X8CAwEAAQ==
 
         $der = $publicKey->getDER();
 
-        $this->assertEquals('d2ea173bab74794037c74653b65433af', md5($der));
+        $this->assertSame('d2ea173bab74794037c74653b65433af', md5($der));
     }
 
     public function test getHPKP returns a string()
@@ -77,6 +77,6 @@ zoQL2yWlSN/1pRKChfSu6X8CAwEAAQ==
 -----END PUBLIC KEY-----
 ');
 
-        $this->assertEquals('Cc9fPJC14sLok3eyhdG7ndEb9A/RT4S22roI9U5js7Y=', $publicKey->getHPKP());
+        $this->assertSame('Cc9fPJC14sLok3eyhdG7ndEb9A/RT4S22roI9U5js7Y=', $publicKey->getHPKP());
     }
 }
