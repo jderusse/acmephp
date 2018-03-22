@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -28,8 +28,8 @@ class Base64SafeEncoderTest extends \PHPUnit_Framework_TestCase
         $encoded = $encoder->encode($message);
         $decoded = $encoder->decode($expected);
 
-        $this->assertEquals($expected, $encoded);
-        $this->assertEquals($message, $decoded);
+        $this->assertSame($expected, $encoded);
+        $this->assertSame($message, $decoded);
     }
 
     /**
@@ -80,7 +80,7 @@ class Base64SafeEncoderTest extends \PHPUnit_Framework_TestCase
     {
         $encoder = new Base64SafeEncoder();
         $decoded = $encoder->decode($input);
-        $this->assertEquals("\00", $decoded);
+        $this->assertSame("\00", $decoded);
     }
 
     public function getTestBadVectors()

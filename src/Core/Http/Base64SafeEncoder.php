@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -42,6 +42,6 @@ class Base64SafeEncoder
             $input .= str_repeat('=', $padlen);
         }
 
-        return base64_decode(strtr($input, '-_', '+/'));
+        return base64_decode(strtr($input, '-_', '+/'), true);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -28,7 +28,7 @@ class HttpDataExtractorTest extends \PHPUnit_Framework_TestCase
         $stubChallenge->getDomain()->willReturn($domain);
         $stubChallenge->getToken()->willReturn($token);
 
-        $this->assertEquals(
+        $this->assertSame(
             'http://'.$domain.'/.well-known/acme-challenge/'.$token,
             $extractor->getCheckUrl($stubChallenge->reveal())
         );
@@ -44,6 +44,6 @@ class HttpDataExtractorTest extends \PHPUnit_Framework_TestCase
 
         $stubChallenge->getPayload()->willReturn($payload);
 
-        $this->assertEquals($payload, $extractor->getCheckContent($stubChallenge->reveal()));
+        $this->assertSame($payload, $extractor->getCheckContent($stubChallenge->reveal()));
     }
 }

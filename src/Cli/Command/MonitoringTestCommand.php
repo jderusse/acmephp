@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Acme PHP project.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -59,7 +59,7 @@ EOF
 
         $this->info('Triggering monitoring on "'.$level.'" level...');
 
-        if ($level === HandlerBuilderInterface::LEVEL_INFO) {
+        if (HandlerBuilderInterface::LEVEL_INFO === $level) {
             $monitoringLogger->info('This is a testing message from Acme PHP monitoring (info level)');
         } else {
             $monitoringLogger->alert('This is a testing message from Acme PHP monitoring (error level)');

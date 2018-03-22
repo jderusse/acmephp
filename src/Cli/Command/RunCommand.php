@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Acme PHP project.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -148,7 +148,7 @@ EOF
                 array_merge([$distinguishedName->getCommonName()], $distinguishedName->getSubjectAlternativeNames())
             )
         );
-        if ($wantedCertificates != $requestedCertificates) {
+        if ($wantedCertificates !== $requestedCertificates) {
             return false;
         }
 

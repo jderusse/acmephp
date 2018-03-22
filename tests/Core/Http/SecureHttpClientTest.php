@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -61,14 +61,14 @@ class SecureHttpClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = $this->createMockedClient([new Response(200, [], 'foo')], false);
         $body = $client->unsignedRequest('GET', '/foo', ['foo' => 'bar'], false);
-        $this->assertEquals('foo', $body);
+        $this->assertSame('foo', $body);
     }
 
     public function testValidUnsignedJsonRequest()
     {
         $client = $this->createMockedClient([new Response(200, [], json_encode(['test' => 'ok']))], false);
         $data = $client->unsignedRequest('GET', '/foo', ['foo' => 'bar'], true);
-        $this->assertEquals(['test' => 'ok'], $data);
+        $this->assertSame(['test' => 'ok'], $data);
     }
 
     /**
@@ -84,14 +84,14 @@ class SecureHttpClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = $this->createMockedClient([new Response(200, [], 'foo')], false);
         $body = $client->signedRequest('GET', '/foo', ['foo' => 'bar'], false);
-        $this->assertEquals('foo', $body);
+        $this->assertSame('foo', $body);
     }
 
     public function testValidSignedJsonRequest()
     {
         $client = $this->createMockedClient([new Response(200, [], json_encode(['test' => 'ok']))], false);
         $data = $client->signedRequest('GET', '/foo', ['foo' => 'bar'], true);
-        $this->assertEquals(['test' => 'ok'], $data);
+        $this->assertSame(['test' => 'ok'], $data);
     }
 
     /**
@@ -135,8 +135,8 @@ class SecureHttpClientTest extends \PHPUnit_Framework_TestCase
         $request = $container[0]['request'];
 
         $this->assertInstanceOf(RequestInterface::class, $request);
-        $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/acme/new-reg', ($request->getUri() instanceof Uri) ? $request->getUri()->getPath() : $request->getUri());
+        $this->assertSame('POST', $request->getMethod());
+        $this->assertSame('/acme/new-reg', ($request->getUri() instanceof Uri) ? $request->getUri()->getPath() : $request->getUri());
 
         $body = \GuzzleHttp\Psr7\copy_to_string($request->getBody());
         $payload = @json_decode($body, true);
@@ -145,6 +145,6 @@ class SecureHttpClientTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('protected', $payload);
         $this->assertArrayHasKey('payload', $payload);
         $this->assertArrayHasKey('signature', $payload);
-        $this->assertEquals('Zm9vYmFy', $payload['signature']);
+        $this->assertSame('Zm9vYmFy', $payload['signature']);
     }
 }

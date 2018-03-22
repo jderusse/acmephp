@@ -1,9 +1,7 @@
 {
     "name": "acmephp/acmephp",
-    "description": "Let's Encrypt client written in PHP",
     "type": "project",
-    "license": "MIT",
-    "homepage": "https://github.com/acmephp/acmephp",
+    "description": "Let's Encrypt client written in PHP",
     "keywords": [
         "acme",
         "acmephp",
@@ -17,6 +15,8 @@
         "x509",
         "cli"
     ],
+    "homepage": "https://github.com/acmephp/acmephp",
+    "license": "MIT",
     "authors": [
         {
             "name": "Titouan Galopin",
@@ -31,31 +31,36 @@
     "require": {
         "php": ">=5.5.0",
         "ext-openssl": "*",
+        "aws/aws-sdk-php": "^3.38",
         "guzzlehttp/guzzle": "^6.0",
+        "league/flysystem": "^1.0.19",
+        "league/flysystem-sftp": "^1.0.7",
+        "monolog/monolog": "^1.19",
+        "padraic/phar-updater": "^1.0",
+        "swiftmailer/swiftmailer": "^5.4",
         "symfony/config": "^3.0",
         "symfony/console": "^3.0",
         "symfony/dependency-injection": "^3.0",
         "symfony/serializer": "^3.0",
         "symfony/yaml": "^3.0",
-        "monolog/monolog": "^1.19",
-        "swiftmailer/swiftmailer": "^5.4",
-        "league/flysystem": "^1.0.19",
-        "league/flysystem-sftp": "^1.0.7",
         "webmozart/assert": "^1.0",
-        "webmozart/path-util": "^2.3",
-        "padraic/phar-updater": "^1.0",
-        "aws/aws-sdk-php": "^3.38"
+        "webmozart/path-util": "^2.3"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.11",
+        "league/flysystem-memory": "^1.0",
+        "phpunit/phpunit": "^4.8.31 || ^5.7.3",
+        "symfony/finder": "^3.0",
+        "symfony/phpunit-bridge": "^3.1",
+        "symfony/process": "^3.0"
     },
     "suggest": {
         "daverandom/libdns": "^2.0"
     },
-    "require-dev": {
-        "phpunit/phpunit": "^4.8.31|^5.7.3",
-        "friendsofphp/php-cs-fixer": "^2.11",
-        "symfony/finder": "^3.0",
-        "symfony/process": "^3.0",
-        "league/flysystem-memory": "^1.0",
-        "symfony/phpunit-bridge": "^3.1"
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
     },
     "autoload": {
         "psr-4": {
@@ -65,11 +70,6 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\AcmePhp\\": "tests/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
         }
     },
     "bin": [
