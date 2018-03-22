@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -28,7 +28,7 @@ class DnsDataExtractorTest extends \PHPUnit_Framework_TestCase
 
         $stubChallenge->getDomain()->willReturn($domain);
 
-        $this->assertEquals('_acme-challenge.'.$domain.'.', $extractor->getRecordName($stubChallenge->reveal()));
+        $this->assertSame('_acme-challenge.'.$domain.'.', $extractor->getRecordName($stubChallenge->reveal()));
     }
 
     public function testGetRecordValue()
@@ -45,6 +45,6 @@ class DnsDataExtractorTest extends \PHPUnit_Framework_TestCase
 
         $mockEncoder->encode(hash('sha256', $payload, true))->willReturn($encodedPayload);
 
-        $this->assertEquals($encodedPayload, $extractor->getRecordValue($stubChallenge->reveal()));
+        $this->assertSame($encodedPayload, $extractor->getRecordValue($stubChallenge->reveal()));
     }
 }

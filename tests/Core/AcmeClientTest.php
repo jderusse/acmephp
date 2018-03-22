@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -71,7 +71,7 @@ class AcmeClientTest extends AbstractFunctionnalTest
         }
 
         $this->assertInstanceOf(AuthorizationChallenge::class, $challenge);
-        $this->assertEquals('acmephp.com', $challenge->getDomain());
+        $this->assertSame('acmephp.com', $challenge->getDomain());
         $this->assertContains('https://localhost:14000/chalZ/', $challenge->getUrl());
 
         $solver->solve($challenge);
@@ -86,7 +86,7 @@ class AcmeClientTest extends AbstractFunctionnalTest
 
         try {
             $check = $this->client->challengeAuthorization($challenge);
-            $this->assertEquals('valid', $check['status']);
+            $this->assertSame('valid', $check['status']);
         } finally {
             $process->stop();
         }
@@ -98,7 +98,7 @@ class AcmeClientTest extends AbstractFunctionnalTest
         $response = $this->client->finalizeOrder($order, $csr);
 
         $this->assertInstanceOf(CertificateResponse::class, $response);
-        $this->assertEquals($csr, $response->getCertificateRequest());
+        $this->assertSame($csr, $response->getCertificateRequest());
         $this->assertInstanceOf(Certificate::class, $response->getCertificate());
     }
 }
