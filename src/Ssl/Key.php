@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -50,7 +50,7 @@ abstract class Key
         unset($lines[count($lines) - 1]);
         unset($lines[0]);
         $result = implode('', $lines);
-        $result = base64_decode($result);
+        $result = base64_decode($result, true);
 
         return $result;
     }

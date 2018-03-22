@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Acme PHP project.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -55,7 +55,7 @@ EOF
         $directories = $master->listContents('certs');
 
         foreach ($directories as $directory) {
-            if ($directory['type'] !== 'dir') {
+            if ('dir' !== $directory['type']) {
                 continue;
             }
 

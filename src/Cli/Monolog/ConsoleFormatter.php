@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Acme PHP project.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -19,7 +19,7 @@ use Monolog\Logger;
  *
  * Extracted from Symfony Monolog bridge.
  *
- * @link https://github.com/symfony/monolog-bridge/edit/master/Formatter/ConsoleFormatter.php
+ * @see https://github.com/symfony/monolog-bridge/edit/master/Formatter/ConsoleFormatter.php
  *
  * @author Tobias Schultze <http://tobion.de>
  */

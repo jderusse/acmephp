@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -74,7 +74,7 @@ jIsyJPXjdAhzAparBWwYzxywy+8PMA==
 
         $publicKey = $privateKey->getPublicKey();
         $this->assertInstanceOf(PublicKey::class, $publicKey);
-        $this->assertEquals('80969771cf03d0331d1911810feff5fc', md5($publicKey->getPEM()));
+        $this->assertSame('80969771cf03d0331d1911810feff5fc', md5($publicKey->getPEM()));
     }
 
     public function test fromDER returns a PrivateKey()
@@ -130,10 +130,10 @@ iGK6mZDSwgi3zAKkSK5jaRqPtztIwcHLPXLIiSKI6Dc3IuGYU1lf1n9RWPi39EdV
 khMBuAxgunyQC+UcviTry1OlOI95e/bZNgVvyTyg4/TbFyn1+1QLNeMtqJE5n5GJ
 jIsyJPXjdAhzAparBWwYzxywy+8PMA==';
 
-        $privateKey = PrivateKey::fromDER(base64_decode($derb64));
+        $privateKey = PrivateKey::fromDER(base64_decode($derb64, true));
 
         $this->assertInstanceOf(PrivateKey::class, $privateKey);
-        $this->assertEquals('a6dcb8eaae257961d2ee888899f087ef', md5($privateKey->getPEM()));
+        $this->assertSame('a6dcb8eaae257961d2ee888899f087ef', md5($privateKey->getPEM()));
     }
 
     public function test getDER returns a string()
@@ -194,6 +194,6 @@ jIsyJPXjdAhzAparBWwYzxywy+8PMA==
 
         $der = $privateKey->getDER();
 
-        $this->assertEquals('6d0f77e67e1024ae113bd80d06ff03ec', md5($der));
+        $this->assertSame('6d0f77e67e1024ae113bd80d06ff03ec', md5($der));
     }
 }

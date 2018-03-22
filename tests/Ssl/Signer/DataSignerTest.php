@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -82,14 +82,14 @@ jIsyJPXjdAhzAparBWwYzxywy+8PMA==
 -----END PRIVATE KEY-----
 ');
 
-        $this->assertEquals(512, strlen($this->service->signData('foo', $privateKey)));
-        $this->assertEquals(512, strlen($this->service->signData('foo', $privateKey, OPENSSL_ALGO_SHA256)));
-        $this->assertEquals(512, strlen($this->service->signData('foo', $privateKey, OPENSSL_ALGO_SHA512)));
-        $this->assertEquals(
+        $this->assertSame(512, strlen($this->service->signData('foo', $privateKey)));
+        $this->assertSame(512, strlen($this->service->signData('foo', $privateKey, OPENSSL_ALGO_SHA256)));
+        $this->assertSame(512, strlen($this->service->signData('foo', $privateKey, OPENSSL_ALGO_SHA512)));
+        $this->assertSame(
             $this->service->signData('foo', $privateKey),
             $this->service->signData('foo', $privateKey, OPENSSL_ALGO_SHA256)
         );
-        $this->assertNotEquals(
+        $this->assertNotSame(
             $this->service->signData('foo', $privateKey, OPENSSL_ALGO_SHA256),
             $this->service->signData('foo', $privateKey, OPENSSL_ALGO_SHA512)
         );

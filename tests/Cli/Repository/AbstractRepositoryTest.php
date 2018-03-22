@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -67,8 +67,8 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->repository->storeAccountKeyPair(new KeyPair(new PublicKey('public'), new PrivateKey('private')));
 
-        $this->assertEquals("public\n", $this->master->read('private/_account/public.pem'));
-        $this->assertEquals("private\n", $this->master->read('private/_account/private.pem'));
+        $this->assertSame("public\n", $this->master->read('private/_account/public.pem'));
+        $this->assertSame("private\n", $this->master->read('private/_account/private.pem'));
     }
 
     public function testLoadAccountKeyPair()
@@ -78,7 +78,7 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->repository->hasAccountKeyPair());
         $this->repository->storeAccountKeyPair($keyPair);
         $this->assertTrue($this->repository->hasAccountKeyPair());
-        $this->assertEquals($keyPair, $this->repository->loadAccountKeyPair());
+        $this->assertSame($keyPair, $this->repository->loadAccountKeyPair());
     }
 
     /**
@@ -93,8 +93,8 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->repository->storeDomainKeyPair('example.com', new KeyPair(new PublicKey('public'), new PrivateKey('private')));
 
-        $this->assertEquals("public\n", $this->master->read('private/example.com/public.pem'));
-        $this->assertEquals("private\n", $this->master->read('private/example.com/private.pem'));
+        $this->assertSame("public\n", $this->master->read('private/example.com/public.pem'));
+        $this->assertSame("private\n", $this->master->read('private/example.com/private.pem'));
     }
 
     public function testLoadDomainKeyPair()
@@ -104,7 +104,7 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->repository->hasDomainKeyPair('example.com'));
         $this->repository->storeDomainKeyPair('example.com', $keyPair);
         $this->assertTrue($this->repository->hasDomainKeyPair('example.com'));
-        $this->assertEquals($keyPair, $this->repository->loadDomainKeyPair('example.com'));
+        $this->assertSame($keyPair, $this->repository->loadDomainKeyPair('example.com'));
     }
 
     /**
@@ -133,11 +133,11 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $data = json_decode($json, true);
 
-        $this->assertEquals('example.org', $data['domain']);
-        $this->assertEquals('http-01', $data['type']);
-        $this->assertEquals('https://acme-v01.api.letsencrypt.org/acme/challenge/bzHDB1T3ssGlGEfK_j-sTsCz6eayLww_Eb56wQpEtCk/124845837', $data['url']);
-        $this->assertEquals('wJDbK9uuuz56O6z_dhMFStHQf4JnEYU9A8WJi7lS8MA', $data['token']);
-        $this->assertEquals('wJDbK9uuuz56O6z_dhMFStHQf4JnEYU9A8WJi7lS8MA.zUny8k33uiaGcQMz8rGcWJnnbuLwTCpbNc7luaPyDgY', $data['payload']);
+        $this->assertSame('example.org', $data['domain']);
+        $this->assertSame('http-01', $data['type']);
+        $this->assertSame('https://acme-v01.api.letsencrypt.org/acme/challenge/bzHDB1T3ssGlGEfK_j-sTsCz6eayLww_Eb56wQpEtCk/124845837', $data['url']);
+        $this->assertSame('wJDbK9uuuz56O6z_dhMFStHQf4JnEYU9A8WJi7lS8MA', $data['token']);
+        $this->assertSame('wJDbK9uuuz56O6z_dhMFStHQf4JnEYU9A8WJi7lS8MA.zUny8k33uiaGcQMz8rGcWJnnbuLwTCpbNc7luaPyDgY', $data['payload']);
     }
 
     public function testLoadDomainAuthorizationChallenge()
@@ -154,7 +154,7 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->repository->hasDomainAuthorizationChallenge('example.com'));
         $this->repository->storeDomainAuthorizationChallenge('example.com', $challenge);
         $this->assertTrue($this->repository->hasDomainAuthorizationChallenge('example.com'));
-        $this->assertEquals($challenge, $this->repository->loadDomainAuthorizationChallenge('example.com'));
+        $this->assertSame($challenge, $this->repository->loadDomainAuthorizationChallenge('example.com'));
     }
 
     /**
@@ -185,14 +185,14 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $data = json_decode($json, true);
 
-        $this->assertEquals('example.org', $data['commonName']);
-        $this->assertEquals('France', $data['countryName']);
-        $this->assertEquals('Ile de France', $data['stateOrProvinceName']);
-        $this->assertEquals('Paris', $data['localityName']);
-        $this->assertEquals('Acme', $data['organizationName']);
-        $this->assertEquals('PHP', $data['organizationalUnitName']);
-        $this->assertEquals('acmephp@example.org', $data['emailAddress']);
-        $this->assertEquals(['sub.example.org', 'sub.example.com'], $data['subjectAlternativeNames']);
+        $this->assertSame('example.org', $data['commonName']);
+        $this->assertSame('France', $data['countryName']);
+        $this->assertSame('Ile de France', $data['stateOrProvinceName']);
+        $this->assertSame('Paris', $data['localityName']);
+        $this->assertSame('Acme', $data['organizationName']);
+        $this->assertSame('PHP', $data['organizationalUnitName']);
+        $this->assertSame('acmephp@example.org', $data['emailAddress']);
+        $this->assertSame(['sub.example.org', 'sub.example.com'], $data['subjectAlternativeNames']);
     }
 
     public function testLoadDomainDistinguishedName()
@@ -211,7 +211,7 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->repository->hasDomainDistinguishedName('example.com'));
         $this->repository->storeDomainDistinguishedName('example.com', $dn);
         $this->assertTrue($this->repository->hasDomainDistinguishedName('example.com'));
-        $this->assertEquals($dn, $this->repository->loadDomainDistinguishedName('example.com'));
+        $this->assertSame($dn, $this->repository->loadDomainDistinguishedName('example.com'));
     }
 
     /**
@@ -229,10 +229,10 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->repository->storeDomainKeyPair('example.com', new KeyPair(new PublicKey('public'), new PrivateKey('private')));
         $this->repository->storeDomainCertificate('example.com', $cert);
 
-        $this->assertEquals(self::$certPem."\n", $this->master->read('certs/example.com/cert.pem'));
-        $this->assertEquals(self::$issuerCertPem."\n", $this->master->read('certs/example.com/chain.pem'));
-        $this->assertEquals(self::$certPem."\n".self::$issuerCertPem."\n", $this->master->read('certs/example.com/fullchain.pem'));
-        $this->assertEquals(self::$certPem."\n".self::$issuerCertPem."\nprivate\n", $this->master->read('certs/example.com/combined.pem'));
+        $this->assertSame(self::$certPem."\n", $this->master->read('certs/example.com/cert.pem'));
+        $this->assertSame(self::$issuerCertPem."\n", $this->master->read('certs/example.com/chain.pem'));
+        $this->assertSame(self::$certPem."\n".self::$issuerCertPem."\n", $this->master->read('certs/example.com/fullchain.pem'));
+        $this->assertSame(self::$certPem."\n".self::$issuerCertPem."\nprivate\n", $this->master->read('certs/example.com/combined.pem'));
     }
 
     public function testLoadDomainCertificate()
@@ -243,7 +243,7 @@ abstract class AbstractRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->repository->storeDomainKeyPair('example.com', new KeyPair(new PublicKey('public'), new PrivateKey('private')));
         $this->repository->storeDomainCertificate('example.com', $cert);
         $this->assertTrue($this->repository->hasDomainCertificate('example.com'));
-        $this->assertEquals($cert, $this->repository->loadDomainCertificate('example.com'));
+        $this->assertSame($cert, $this->repository->loadDomainCertificate('example.com'));
     }
 
     /**

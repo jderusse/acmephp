@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Acme PHP project.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -80,11 +80,11 @@ class PushRancherAction implements ActionInterface
         }, $certificate->getIssuerChain());
 
         return \GuzzleHttp\json_encode([
-            'name'        => $response->getCertificateRequest()->getDistinguishedName()->getCommonName(),
+            'name' => $response->getCertificateRequest()->getDistinguishedName()->getCommonName(),
             'description' => 'Generated with Acme PHP',
-            'cert'        => $certificate->getPEM(),
-            'certChain'   => implode("\n", $issuerChain),
-            'key'         => $privateKey->getPEM(),
+            'cert' => $certificate->getPEM(),
+            'certChain' => implode("\n", $issuerChain),
+            'key' => $privateKey->getPEM(),
         ]);
     }
 

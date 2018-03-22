@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Acme PHP project.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -86,7 +86,7 @@ EOF
                     $authorizationChallenge = $candidate;
 
                     $this->debug('Authorization challenge supported by solver', [
-                        'solver'    => $solverName,
+                        'solver' => $solverName,
                         'challenge' => $candidate->getType(),
                     ]);
 
@@ -94,7 +94,7 @@ EOF
                 }
 
                 $this->debug('Authorization challenge not supported by solver', [
-                    'solver'    => $solverName,
+                    'solver' => $solverName,
                     'challenge' => $candidate->getType(),
                 ]);
             }
@@ -102,7 +102,7 @@ EOF
                 throw new ChallengeNotSupportedException();
             }
             $this->debug('Storing authorization challenge', [
-                'domain'    => $domainKey,
+                'domain' => $domainKey,
                 'challenge' => $authorizationChallenge->toArray(),
             ]);
 

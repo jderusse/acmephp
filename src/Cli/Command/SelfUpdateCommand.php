@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Acme PHP project.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -228,10 +228,10 @@ class SelfUpdateCommand extends Command
 
             $newVersion = $updater->getNewVersion();
             $oldVersion = $updater->getOldVersion();
-            if (strlen($newVersion) === 40) {
+            if (40 === strlen($newVersion)) {
                 $newVersion = 'dev-'.$newVersion;
             }
-            if (strlen($oldVersion) === 40) {
+            if (40 === strlen($oldVersion)) {
                 $oldVersion = 'dev-'.$oldVersion;
             }
 
@@ -313,7 +313,7 @@ class SelfUpdateCommand extends Command
         if ($updater->getStrategy() instanceof ShaStrategy) {
             $stability = 'development';
         } elseif ($updater->getStrategy() instanceof GithubStrategy
-            && $updater->getStrategy()->getStability() === GithubStrategy::UNSTABLE) {
+            && GithubStrategy::UNSTABLE === $updater->getStrategy()->getStability()) {
             $stability = 'pre-release';
         }
 

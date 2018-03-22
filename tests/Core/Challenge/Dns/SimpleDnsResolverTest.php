@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -25,20 +25,20 @@ class SimpleDnsResolverTest extends \PHPUnit_Framework_TestCase
                 'domain.com.' => [
                     [
                         'type' => 'A',
-                        'ip'   => '1.2.3.4',
+                        'ip' => '1.2.3.4',
                     ],
                     [
-                        'type'    => 'TXT',
+                        'type' => 'TXT',
                         'entries' => ['foo'],
                     ],
                     [
-                        'type'    => 'TXT',
+                        'type' => 'TXT',
                         'entries' => ['foo', 'bar'],
                     ],
                 ],
                 'domain2.com.' => [
                     [
-                        'type'    => 'TXT',
+                        'type' => 'TXT',
                         'entries' => ['baz'],
                     ],
                 ],
@@ -48,6 +48,6 @@ class SimpleDnsResolverTest extends \PHPUnit_Framework_TestCase
         $resolver = new SimpleDnsResolver();
         $entries = $resolver->getTxtEntries('domain.com.');
 
-        $this->assertEquals(['bar', 'foo'], $entries);
+        $this->assertSame(['bar', 'foo'], $entries);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Acme PHP project.
+ * This file is part of the Acme PHP Client project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -23,7 +23,7 @@ class SlackHandlerBuilder implements HandlerBuilderInterface
 {
     private static $defaults = [
         'username' => 'Acme PHP',
-        'level'    => Logger::INFO,
+        'level' => Logger::INFO,
     ];
 
     /**
