@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -40,9 +40,9 @@ class SecureHttpClientFactoryTest extends \PHPUnit_Framework_TestCase
         $client = $factory->createSecureHttpClient($keyPair);
 
         $this->assertInstanceOf(SecureHttpClient::class, $client);
-        $this->assertEquals($base64Encoder, $client->getBase64Encoder());
-        $this->assertEquals($keyParser, $client->getKeyParser());
-        $this->assertEquals($dataSigner, $client->getDataSigner());
-        $this->assertEquals($keyPair, $client->getAccountKeyPair());
+        $this->assertSame($base64Encoder, $client->getBase64Encoder());
+        $this->assertSame($keyParser, $client->getKeyParser());
+        $this->assertSame($dataSigner, $client->getDataSigner());
+        $this->assertSame($keyPair, $client->getAccountKeyPair());
     }
 }

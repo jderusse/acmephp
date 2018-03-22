@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -59,7 +59,7 @@ class DnsValidator implements ValidatorInterface
         $recordValue = $this->extractor->getRecordValue($authorizationChallenge);
 
         try {
-            return in_array($recordValue, $this->dnsResolver->getTxtEntries($recordName));
+            return in_array($recordValue, $this->dnsResolver->getTxtEntries($recordName), true);
         } catch (AcmeDnsResolutionException $e) {
             return false;
         }
