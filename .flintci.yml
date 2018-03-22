@@ -1,0 +1,11 @@
+services:
+  composernormalize:
+    version: latest
+  xmllint:
+    version: latest
+  yamllint:
+    version: latest
+    config_path:      ~
+  phpcsfixer:
+    version: latest
+    config_path: .php_cs
