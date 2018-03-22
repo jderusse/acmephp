@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ACME PHP library.
+ * This file is part of the Acme PHP project.
  *
  * (c) Titouan Galopin <galopintitouan@gmail.com>
  *
@@ -57,7 +57,7 @@ oVyIb1lpwK0r0vN9y8ns80MP3HtjPYtARWJ9z9P4N+guHZdnbw==
 
         $publicKey = $certificate->getPublicKey();
         $this->assertInstanceOf(PublicKey::class, $publicKey);
-        $this->assertEquals('58b94e38ce0088f0ec5a0c38f04bd76c', md5($publicKey->getPEM()));
+        $this->assertSame('58b94e38ce0088f0ec5a0c38f04bd76c', md5($publicKey->getPEM()));
     }
 
     public function test getPublicKeyResource returns a resource()
