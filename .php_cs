@@ -23,6 +23,7 @@ $config = PhpCsFixer\Config::create()
         'no_useless_else' => true,
         'phpdoc_order' => true,
         'psr4' => true,
+        'mb_str_functions' => true,      
         'simplified_null_return' => true,
         'no_useless_return' => true,
         'strict_comparison' => true,
